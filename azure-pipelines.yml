@@ -1,0 +1,48 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Target .NET Core 3.1'
+  inputs:
+    packageType: sdk
+    version: 3.1.x
+
+- task: TerraformInstaller@0
+  displayName: 'Install Terraform'
+  inputs:
+    terraformVersion: '0.12.21'
+
+- task: DotNetCoreCLI@2
+  displayName: .Net Core Restore
+  inputs:
+    command: restore
+    projects: '**/*.sln'
+
+- task: DotNetCoreCLI@2
+  displayName: .Net Core Build
+  inputs:
+    command: build
+    projects: '**/*.sln'
+
+
+- task: DotNetCoreCLI@2
+  displayName: .Net Core Publish
+  inputs:
+    command: build
+    projects: '**/*funapp.csproj'
+    arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
+
