@@ -1,5 +1,5 @@
 #Function Archetype
-Arquetipo de Inteligo para la creacion de Funciones en Azure
+Arquetipo para la creacion de Funciones en Azure
 
 #Deploy
 Local Deployment 
